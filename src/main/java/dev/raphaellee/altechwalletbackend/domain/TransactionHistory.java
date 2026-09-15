@@ -1,10 +1,7 @@
 package dev.raphaellee.altechwalletbackend.domain;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.joda.money.Money;
 
@@ -12,8 +9,9 @@ import java.time.Instant;
 import java.util.UUID;
 
 @Entity
-@Getter @Setter
+@Builder @Getter @Setter @ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class TransactionHistory{
 
     @Id @GeneratedValue(strategy = GenerationType.UUID)

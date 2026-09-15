@@ -1,23 +1,21 @@
 package dev.raphaellee.altechwalletbackend.domain;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.UUID;
 
 @Entity
-@Getter @Setter
+@Builder @Getter @Setter @ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class PlayerWallet {
 
     @Id @GeneratedValue(strategy = GenerationType.UUID)
     private UUID walletId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "player_username", nullable = false, updatable = false)
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "owner_username", nullable = false, updatable = false)
     private Player owner;
 
     @Embedded
