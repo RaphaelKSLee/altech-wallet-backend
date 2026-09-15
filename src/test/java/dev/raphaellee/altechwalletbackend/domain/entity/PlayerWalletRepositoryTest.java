@@ -1,4 +1,4 @@
-package dev.raphaellee.altechwalletbackend.domain;
+package dev.raphaellee.altechwalletbackend.domain.entity;
 
 import org.joda.money.CurrencyUnit;
 import org.joda.money.Money;
@@ -35,8 +35,8 @@ class PlayerWalletRepositoryTest {
 
         PlayerWallet wallet = PlayerWallet.builder()
                 .owner(player)
-                .balance(new MoneyWrapper(Money.of(
-                        CurrencyUnit.USD, BigDecimal.valueOf(100.00))))
+                .balance(Money.of(
+                        CurrencyUnit.USD, BigDecimal.valueOf(100.00)))
                 .build();
         entityManager.persistAndFlush(wallet);
         entityManager.clear();
@@ -45,7 +45,7 @@ class PlayerWalletRepositoryTest {
                 .findByOwner_Username("charlie");
 
         assertThat(foundWallet).isPresent();
-        assertThat(foundWallet.get().getBalance().toMoney())
+        assertThat(foundWallet.get().getBalance())
                 .isEqualTo(Money.of(CurrencyUnit.USD, BigDecimal.valueOf(100.00)));
     }
 

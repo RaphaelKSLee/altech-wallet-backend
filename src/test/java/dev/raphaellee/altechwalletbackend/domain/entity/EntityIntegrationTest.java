@@ -1,4 +1,4 @@
-package dev.raphaellee.altechwalletbackend.domain;
+package dev.raphaellee.altechwalletbackend.domain.entity;
 
 import lombok.extern.slf4j.Slf4j;
 import org.joda.money.CurrencyUnit;
@@ -59,15 +59,15 @@ class EntityIntegrationTest {
 
         PlayerWallet wallet = PlayerWallet.builder()
                 .owner(sender)
-                .balance(new MoneyWrapper(Money.of(
-                        CurrencyUnit.USD, BigDecimal.valueOf(100.55))))
+                .balance(Money.of(
+                        CurrencyUnit.USD, BigDecimal.valueOf(100.55)))
                 .build();
         entityManager.persist(wallet);
 
         TransactionHistory history = TransactionHistory.builder()
                 .sender(sender).receiver(receiver)
-                .amount(new MoneyWrapper(Money.of(
-                        CurrencyUnit.USD, BigDecimal.valueOf(25.00))))
+                .amount(Money.of(
+                        CurrencyUnit.USD, BigDecimal.valueOf(25.00)))
                 .created(Instant.now())
                 .build();
 
@@ -82,7 +82,7 @@ class EntityIntegrationTest {
         assertThat(savedWallet.getOwner().getUsername())
                 .isEqualTo("alice");
 
-        Money savedMoney = savedWallet.getBalance().toMoney();
+        Money savedMoney = savedWallet.getBalance();
         assertThat(savedMoney.getCurrencyUnit()).isEqualTo(CurrencyUnit.USD);
         assertThat(savedMoney.getAmount())
                 .isEqualByComparingTo(BigDecimal.valueOf(100.55));
@@ -90,7 +90,7 @@ class EntityIntegrationTest {
         TransactionHistory savedHistory = entityManager
                 .find(TransactionHistory.class, history.getTransactionId());
         assertThat(savedHistory).isNotNull();
-        assertThat(savedHistory.getAmount().toMoney())
+        assertThat(savedHistory.getAmount())
                 .isEqualTo(Money.of(CurrencyUnit.USD, BigDecimal.valueOf(25.00)));
     }
 

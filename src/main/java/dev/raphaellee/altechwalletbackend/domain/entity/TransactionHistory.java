@@ -1,4 +1,4 @@
-package dev.raphaellee.altechwalletbackend.domain;
+package dev.raphaellee.altechwalletbackend.domain.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -25,9 +25,30 @@ public class TransactionHistory{
     @JoinColumn(name = "receiver", nullable = false, updatable = false)
     private Player receiver;
 
+    @Getter(AccessLevel.NONE)
+    @Setter(AccessLevel.NONE)
     @Embedded
     private MoneyWrapper amount;
 
     @CreationTimestamp
     private Instant created;
+
+    // Custom Getter
+    public Money getAmount() {
+        return this.amount.toMoney();
+    }
+
+    // Custom Setter
+    public void setAmount(Money money) {
+        this.amount = new MoneyWrapper(money);
+    }
+
+    // Custom Builder Method
+    public static class TransactionHistoryBuilder {
+        // Lombok will wire this up automatically
+        public TransactionHistoryBuilder amount(Money money) {
+            this.amount = new MoneyWrapper(money);
+            return this;
+        }
+    }
 }

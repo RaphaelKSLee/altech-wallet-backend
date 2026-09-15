@@ -1,4 +1,4 @@
-package dev.raphaellee.altechwalletbackend.domain;
+package dev.raphaellee.altechwalletbackend.domain.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
