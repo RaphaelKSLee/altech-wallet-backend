@@ -14,16 +14,16 @@ import java.util.UUID;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class TransactionHistory{
 
-    @Id @GeneratedValue(strategy = GenerationType.UUID)
+    @Id
     private UUID transactionId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "sender", nullable = false, updatable = false)
-    private Player sender;
+    @JoinColumn(name = "debit_wallet", nullable = false, updatable = false)
+    private PlayerWallet debitWallet;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "receiver", nullable = false, updatable = false)
-    private Player receiver;
+    @JoinColumn(name = "credit_wallet", nullable = false, updatable = false)
+    private PlayerWallet creditWallet;
 
     @Getter(AccessLevel.NONE)
     @Setter(AccessLevel.NONE)

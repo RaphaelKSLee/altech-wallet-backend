@@ -14,6 +14,7 @@ import org.testcontainers.junit.jupiter.Container;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -53,19 +54,25 @@ class EntityIntegrationTest {
 
         Player sender = new Player("alice");
         entityManager.persist(sender);
-
-        Player receiver = new Player("bob");
-        entityManager.persist(receiver);
-
-        PlayerWallet wallet = PlayerWallet.builder()
+        PlayerWallet debitWallet = PlayerWallet.builder()
                 .owner(sender)
                 .balance(Money.of(
                         CurrencyUnit.USD, BigDecimal.valueOf(100.55)))
                 .build();
-        entityManager.persist(wallet);
+        entityManager.persist(debitWallet);
+
+        Player receiver = new Player("bob");
+        entityManager.persist(receiver);
+        PlayerWallet creditWallet = PlayerWallet.builder()
+                .owner(receiver)
+                .balance(Money.of(
+                        CurrencyUnit.USD, BigDecimal.valueOf(0)))
+                .build();
+        entityManager.persist(creditWallet);
 
         TransactionHistory history = TransactionHistory.builder()
-                .sender(sender).receiver(receiver)
+                .transactionId(UUID.randomUUID())
+                .debitWallet(debitWallet).creditWallet(creditWallet)
                 .amount(Money.of(
                         CurrencyUnit.USD, BigDecimal.valueOf(25.00)))
                 .created(Instant.now())
@@ -77,7 +84,7 @@ class EntityIntegrationTest {
         entityManager.clear();
 
         PlayerWallet savedWallet = entityManager
-                .find(PlayerWallet.class, wallet.getWalletId());
+                .find(PlayerWallet.class, debitWallet.getWalletId());
         assertThat(savedWallet).isNotNull();
         assertThat(savedWallet.getOwner().getUsername())
                 .isEqualTo("alice");
