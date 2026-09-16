@@ -10,6 +10,11 @@ public class Dtos {
 
     public record WalletResponse(UUID walletId, String ownerUsername, BigDecimal balance, String currencyCode) {}
 
+    public record BalanceResponse(
+            BigDecimal amount,
+            String currency
+    ) {}
+
     public record TransactionRequest(
             UUID transactionId,
             UUID debitWalletId,

@@ -41,4 +41,20 @@ public class PlayerController {
                         wallet.getBalance().getCurrencyUnit().getCode()
                 ));
     }
+
+    @GetMapping("/{username}/wallets/balance")
+    public ResponseEntity<BalanceResponse> getWalletBalance(@PathVariable String username) {
+        // Find the player or throw an exception if they don't exist
+        Player owner = playerRepository.findById(username)
+                .orElseThrow(() -> new RuntimeException("Player not found"));
+
+        // Retrieve the balance using the PlayerService
+        org.joda.money.Money balance = playerService.getBalance(owner);
+
+        // Return the response
+        return ResponseEntity.ok(new BalanceResponse(
+                balance.getAmount(),
+                balance.getCurrencyUnit().getCode()
+        ));
+    }
 }
