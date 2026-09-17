@@ -1,5 +1,5 @@
 # Altech Wallet Backend
-Time used: ~ two days of off-hours
+Time used: ~ two days of off-hours  
 Take home assignment from Altech.
 - partially an assignment
 - partially for fun / an exercise for:
