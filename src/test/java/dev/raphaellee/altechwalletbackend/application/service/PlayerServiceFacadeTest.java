@@ -61,7 +61,8 @@ class PlayerServiceFacadeTest {
         when(playerService.createWallet(mockPlayer)).thenReturn(mockWallet);
 
         // Act
-        PlayerDto.WalletResponse response = playerServiceFacade.createWallet(username);
+        PlayerDto.WalletResponse response = playerServiceFacade
+                .createWallet(new PlayerDto.CreateWalletRequest(username));
 
         // Assert
         assertNotNull(response);

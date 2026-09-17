@@ -25,8 +25,15 @@ public class PlayerServiceFacade {
     @Autowired
     TransactionHistoryRepository transactionHistoryRepository;
 
-    public PlayerDto.WalletResponse createWallet(String ownerUsername) {
-        Player owner = playerRepository.findByIdOrThrow(ownerUsername);
+    public PlayerDto.CreatePlayerResponse createPlayer(
+            PlayerDto.CreatePlayerRequest request
+    ) {
+        Player player = playerService.createPlayer(request.username());
+        return new PlayerDto.CreatePlayerResponse(player.getUsername());
+    }
+
+    public PlayerDto.WalletResponse createWallet(PlayerDto.CreateWalletRequest request) {
+        Player owner = playerRepository.findByIdOrThrow(request.username());
         PlayerWallet wallet = playerService.createWallet(owner);
         return new PlayerDto.WalletResponse(
                 wallet.getWalletId(),

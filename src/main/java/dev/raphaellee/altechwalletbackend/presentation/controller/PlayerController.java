@@ -8,6 +8,7 @@ import dev.raphaellee.altechwalletbackend.domain.entity.PlayerRepository;
 import dev.raphaellee.altechwalletbackend.domain.entity.PlayerWallet;
 import dev.raphaellee.altechwalletbackend.domain.entity.TransactionHistory;
 import dev.raphaellee.altechwalletbackend.domain.service.PlayerService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -25,16 +26,20 @@ public class PlayerController {
 
 
     @PostMapping
-    public ResponseEntity<CreatePlayerResponse> createPlayer(@RequestBody CreatePlayerRequest request) {
+    public ResponseEntity<CreatePlayerResponse> createPlayer(
+            @Valid @RequestBody CreatePlayerRequest request
+    ) {
         Player player = playerService.createPlayer(request.username());
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(new CreatePlayerResponse(player.getUsername()));
     }
 
     @PostMapping("/{username}/wallets")
-    public ResponseEntity<WalletResponse> createWallet(@PathVariable String username) {
+    public ResponseEntity<WalletResponse> createWallet(
+            @Valid CreateWalletRequest request
+    ) {
         WalletResponse response = playerServiceFacade
-                .createWallet(username);
+                .createWallet(request);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(response);
     }

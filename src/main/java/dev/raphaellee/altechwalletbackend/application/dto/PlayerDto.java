@@ -13,6 +13,10 @@ public class PlayerDto {
 
     public record CreatePlayerResponse(String username) {}
 
+    public record CreateWalletRequest(
+            @NotBlank String username
+    ) {}
+
     public record WalletResponse(UUID walletId, String ownerUsername, BigDecimal balance, String currencyCode) {}
 
     public record BalanceResponse(
