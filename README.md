@@ -58,6 +58,8 @@ docker compose up
 - OpenApi
 - AI Tooling notes
   - No agentic workflows
+  - Chat-based pair programming (through web guis because I'm poor)
+    - Human:AI effort ~50:50
   - AI involvement (Low to high:
     - Domain
     - Application
