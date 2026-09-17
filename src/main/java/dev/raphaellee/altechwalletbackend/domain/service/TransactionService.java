@@ -1,10 +1,6 @@
 package dev.raphaellee.altechwalletbackend.domain.service;
 
-import dev.raphaellee.altechwalletbackend.domain.entity.PlayerWallet;
-import dev.raphaellee.altechwalletbackend.domain.entity.PlayerWalletRepository;
-import dev.raphaellee.altechwalletbackend.domain.entity.TransactionHistory;
-import dev.raphaellee.altechwalletbackend.domain.entity.TransactionHistoryRepository;
-import dev.raphaellee.altechwalletbackend.domain.exception.DuplicatedTransactionException;
+import dev.raphaellee.altechwalletbackend.domain.entity.*;
 import dev.raphaellee.altechwalletbackend.domain.exception.InsufficientFundsException;
 import lombok.extern.slf4j.Slf4j;
 import org.joda.money.Money;
@@ -36,15 +32,12 @@ public class TransactionService {
         walletRepository.save(wallet);
     }
 
-    public UUID performTransaction(
+    public UUID performWalletTransaction(
             UUID transactionId,
             PlayerWallet debitWallet,
             PlayerWallet creditWallet,
             Money amount
     ) {
-        if (transactionHistoryRepository.existsById(transactionId)) {
-            throw new DuplicatedTransactionException(transactionId);
-        }
         debitWallet(debitWallet, amount);
         creditWallet(creditWallet, amount);
         TransactionHistory history = TransactionHistory.builder()

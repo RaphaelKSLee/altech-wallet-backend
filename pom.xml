@@ -91,6 +91,12 @@
 			<optional>true</optional>
 		</dependency>
 		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+			<version>2.9.1</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
@@ -103,6 +109,11 @@
 		<dependency>
 			<groupId>org.springframework.modulith</groupId>
 			<artifactId>spring-modulith-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.modulith</groupId>
+			<artifactId>spring-modulith-docs</artifactId>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -140,6 +151,18 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>build-image-no-fork</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<image>
+						<name>${project.artifactId}:latest</name>
+					</image>
+				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -180,6 +203,26 @@
 						</configuration>
 					</execution>
 				</executions>
+			</plugin>
+			<plugin>
+				<groupId>com.github.davidmoten</groupId>
+				<artifactId>plantuml-maven-plugin</artifactId>
+				<version>0.2.14</version>
+				<executions>
+					<execution>
+						<id>generate-diagrams</id>
+						<phase>prepare-package</phase>
+						<goals><goal>generate</goal></goals>
+					</execution>
+				</executions>
+				<configuration>
+					<sources>
+						<directory>${project.build.directory}/spring-modulith-docs</directory>
+						<includes><include>**/*.puml</include></includes>
+					</sources>
+					<outputDirectory>${project.basedir}/docs/diagrams</outputDirectory>
+					<formats><format>svg</format></formats>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>

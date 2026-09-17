@@ -1,6 +1,6 @@
 package dev.raphaellee.altechwalletbackend.presentation;
 
-import dev.raphaellee.altechwalletbackend.domain.exception.DuplicatedTransactionException;
+import dev.raphaellee.altechwalletbackend.application.exception.DuplicatedTransactionException;
 import dev.raphaellee.altechwalletbackend.domain.exception.InsufficientFundsException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

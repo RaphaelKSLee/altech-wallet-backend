@@ -1,7 +1,7 @@
 package dev.raphaellee.altechwalletbackend.domain.service;
 
 import dev.raphaellee.altechwalletbackend.domain.entity.*;
-import dev.raphaellee.altechwalletbackend.domain.exception.EntityNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.joda.money.CurrencyUnit;
 import org.joda.money.Money;
@@ -24,6 +24,9 @@ public class PlayerService {
         playerRepository.save(player);
         return player;
     }
+     public Player getPlayer(String username) {
+        return playerRepository.findById(username).orElseThrow(EntityNotFoundException::new);
+     }
 
     public PlayerWallet createWallet(Player owner) {
         PlayerWallet wallet = PlayerWallet.builder()
@@ -35,8 +38,15 @@ public class PlayerService {
         return wallet;
     }
 
+    public PlayerWallet getWallet(Player owner) {
+        return walletRepository.findByOwnerOrThrow(owner);
+    }
+    public PlayerWallet getWallet(String username) {
+        return walletRepository.findByOwnerOrThrow(getPlayer(username));
+    }
+
     public Money getBalance(Player owner) {
-        PlayerWallet wallet = walletRepository.findByOwner(owner).orElseThrow(() -> new EntityNotFoundException("Player has no wallet"));
+        PlayerWallet wallet = walletRepository.findByOwnerOrThrow(owner);
         return wallet.getBalance();
     }
 }

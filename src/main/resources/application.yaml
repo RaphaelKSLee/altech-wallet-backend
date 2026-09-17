@@ -14,3 +14,5 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
+  modulith:
+    detection-strategy: dev.raphaellee.altechwalletbackend.modulith.TwoLevelModuleStrategy

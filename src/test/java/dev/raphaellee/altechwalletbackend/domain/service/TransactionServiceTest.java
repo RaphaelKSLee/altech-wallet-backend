@@ -4,7 +4,7 @@ import dev.raphaellee.altechwalletbackend.domain.entity.PlayerWallet;
 import dev.raphaellee.altechwalletbackend.domain.entity.PlayerWalletRepository;
 import dev.raphaellee.altechwalletbackend.domain.entity.TransactionHistory;
 import dev.raphaellee.altechwalletbackend.domain.entity.TransactionHistoryRepository;
-import dev.raphaellee.altechwalletbackend.domain.exception.DuplicatedTransactionException;
+import dev.raphaellee.altechwalletbackend.application.exception.DuplicatedTransactionException;
 import dev.raphaellee.altechwalletbackend.domain.exception.InsufficientFundsException;
 import org.joda.money.CurrencyUnit;
 import org.joda.money.Money;
@@ -80,14 +80,13 @@ class TransactionServiceTest {
     }
 
     @Test
-    void performTransaction_ShouldTransferFundsAndSaveHistory_WhenValid() {
+    void performWalletTransaction_ShouldTransferFundsAndSaveHistory_WhenValid() {
         // Arrange
-        when(transactionHistoryRepository.existsById(transactionId)).thenReturn(false);
         when(transactionHistoryRepository.save(any(TransactionHistory.class)))
                 .thenAnswer(invocation -> invocation.getArgument(0));
 
         // Act
-        UUID resultId = transactionService.performTransaction(transactionId, debitWallet, creditWallet, transferAmount);
+        UUID resultId = transactionService.performWalletTransaction(transactionId, debitWallet, creditWallet, transferAmount);
 
         // Assert
         assertEquals(transactionId, resultId);
@@ -103,20 +102,5 @@ class TransactionServiceTest {
         TransactionHistory savedHistory = historyCaptor.getValue();
         assertEquals(transactionId, savedHistory.getTransactionId());
         assertEquals(transferAmount, savedHistory.getAmount());
-    }
-
-    @Test
-    void performTransaction_ShouldThrowException_WhenTransactionIdIsDuplicated() {
-        // Arrange
-        when(transactionHistoryRepository.existsById(transactionId)).thenReturn(true);
-
-        // Act & Assert
-        assertThrows(DuplicatedTransactionException.class, () ->
-                transactionService.performTransaction(transactionId, debitWallet, creditWallet, transferAmount)
-        );
-
-        // Ensure no wallets were modified or saved
-        verify(walletRepository, never()).save(any());
-        verify(transactionHistoryRepository, never()).save(any());
     }
 }
