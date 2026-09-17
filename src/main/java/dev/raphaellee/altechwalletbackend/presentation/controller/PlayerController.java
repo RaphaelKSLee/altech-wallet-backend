@@ -4,9 +4,6 @@ import dev.raphaellee.altechwalletbackend.application.dto.PlayerDto.*;
 import dev.raphaellee.altechwalletbackend.application.dto.TransactionDto;
 import dev.raphaellee.altechwalletbackend.application.service.PlayerServiceFacade;
 import dev.raphaellee.altechwalletbackend.domain.entity.Player;
-import dev.raphaellee.altechwalletbackend.domain.entity.PlayerRepository;
-import dev.raphaellee.altechwalletbackend.domain.entity.PlayerWallet;
-import dev.raphaellee.altechwalletbackend.domain.entity.TransactionHistory;
 import dev.raphaellee.altechwalletbackend.domain.service.PlayerService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -22,8 +19,6 @@ public class PlayerController {
 
     private final PlayerService playerService;
     private final PlayerServiceFacade playerServiceFacade;
-    private final PlayerRepository playerRepository;
-
 
     @PostMapping
     public ResponseEntity<CreatePlayerResponse> createPlayer(
