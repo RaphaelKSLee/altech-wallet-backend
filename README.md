@@ -27,6 +27,21 @@ docker compose up
 ### Clean architecture
 ![components](docs/diagrams/components.svg)
 
+### Architecture philosophy (Ideal)
+- Domain: Unrestricted wallet-to-wallet transactions
+- Application: 
+  - Currency type (USD) and 1-player-to-1-wallet restrictions
+  - Mapping layer
+- Infra: DB (Postgres / Redis) concerns
+- Presentation: Endpoint (http / rpc?, etc.) handling 
+
+### Architecture reality
+- Merged domain / infra layer for JPA / Domain entities
+
+
+## Concurrency & idempotency
+- key-based transaction idempotency in application layer
+- wallet jpa entity versioning for concurrent credit/debit
 
 ## Assumptions / limitations
 - 1-1 Player-Wallet(USD) mapping
@@ -34,3 +49,17 @@ docker compose up
 - No simple credit / debit support in application layer
   - Must be transaction with clear to/from accounts
 - 19 significant digit transactions
+- Printing / destroying money requires dedicated Player / Wallet object
+- Idempotency and getBalance Redis caching not implemented yet, will justify dedicated infrastructure layer
+- Single application instance
+
+## Supporting practices
+- Docker Compose
+- OpenApi
+- AI Tooling notes
+  - No agentic workflows
+  - AI involvement (Low to high:
+    - Domain
+    - Application
+    - Presentation
+    - (Infrastructure)
